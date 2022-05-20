@@ -1,5 +1,4 @@
 import { createConnection, getConnectionOptions } from 'typeorm';
-
 import { EventEmitter } from 'events'
 
 const emmiter = new EventEmitter();
@@ -10,14 +9,15 @@ interface IOptions {
 
 getConnectionOptions().then(options => {
   const newOptions = options as IOptions;
-  newOptions.host = 'db_locadora';
+  newOptions.host = 'db_locadora'; 
   createConnection({
     ...options,
   }).then(() => { 
-    emmiter.emit('db_connect')
-   }).catch(() => {
-     emmiter.emit('db_failed');
-   }) ;
+    console.log('✅ Database connected!');
+    emmiter.emit('db_connect');
+  }).catch((err) => {
+    console.error("Error during Data Source initialization", err)
+});
 });
 
 export { emmiter }
